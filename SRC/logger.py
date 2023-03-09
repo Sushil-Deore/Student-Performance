@@ -1,4 +1,3 @@
-
 '''
 This code sets up logging in a Python script, which allows the script to output log messages to a file rather than to the console.
 
