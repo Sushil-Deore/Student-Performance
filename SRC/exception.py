@@ -1,8 +1,7 @@
 
 import sys # the sys module in python provides various functions and variables that are used to manipulate different parts of the python runtime environment
 import logging
-import logger
-
+from SRC.logger import logging
 def error_massage_detail(error, error_detail:sys):
     _, _, exc_tb = error_detail.exc_info() # This gives execution info and this will give you three important information we are not interested in first and second, third will give location and error message
     
@@ -39,4 +38,3 @@ class CustomException(Exception):
     def __str__(self):
         return self.error_message
 
-        
