@@ -35,34 +35,30 @@ class DataTransformation:
 
         try:
             # Defining numerical and categorical columns
-            numerical_columns = ['writing score', 'reading score']
-            categorical_columns = ['gender', 'race/ethnicity', 'parental level of education', 'lunch', 'test preparation course']
+            numerical_columns = ['writing_score', 'reading_score']
+
+            categorical_columns = ['gender', 'race_ethnicity', 'parental_level_of_education', 'lunch', 'test_preparation_course']
 
             logging.info('Entering numerical pipeline in Data Transformation')
+
             # Creating numerical pipeline for process of missing value imputation and scaling
-            num_pipline = Pipeline(
-                steps=[("imputer", SimpleImputer(strategy="median")),
-                       ("scaler", StandardScaler(with_mean=False))])
+            num_pipline = Pipeline(steps=[("imputer", SimpleImputer(strategy="median")),
+                                          ("scaler", StandardScaler(with_mean=False))])
             
-            logging.info('Entering catehorical pipeline in Data Transformation')
+            logging.info('Entering Categorical pipeline in Data Transformation')
+
             # Creating categorical pipeline for process missing value imputation, one hot encoding and scaling 
-            cate_pipline = Pipeline(
-                steps=[("imputer", SimpleImputer(strategy='most_frequent')),
-                        ("one_hot_encoder", OneHotEncoder()),
-                        ("scaler", StandardScaler(with_mean=False))])
+            cate_pipline = Pipeline(steps=[("imputer", SimpleImputer(strategy='most_frequent')),
+                                           ("one_hot_encoder", OneHotEncoder()),
+                                           ("scaler", StandardScaler(with_mean=False))])
             
             logging.info("Entering ColumnTransformer for Combination in Data Transformer")
-
             logging.info(f"Categorical Columns: {categorical_columns}")
             logging.info(f"Numerical Columns: {numerical_columns}")
 
             # Creating preprocessor object to combine numerical and categorical pipeline
-            preprocessor = ColumnTransformer(
-                [
-                ("num_pipeline", num_pipline, numerical_columns),
-                ("cate_pipeline", cate_pipline, categorical_columns)
-                ]
-            )
+            preprocessor = ColumnTransformer([("num_pipeline", num_pipline, numerical_columns),
+                                              ("cate_pipeline", cate_pipline, categorical_columns)])
             
             # Returning preprocessor object of above combine pipeline
             return preprocessor
@@ -77,13 +73,12 @@ class DataTransformation:
             test_df = pd.read_csv(test_path)
 
             logging.info('Reading train & test data Completed!')
-
             logging.info('Obtaining Preprocessing Object')
 
             preprocessing_obj = self.get_data_transformer_object()
 
-            target_column_name = "math score"
-            numerical_columns = ['writing score', 'reading score']
+            target_column_name = "math_score"
+            numerical_columns = ['writing_score', 'reading_score']
             #categorical_columns = ['gender', 'race/ethnicity', 'parental level of education', 'lunch', 'test preparation course']
 
             input_feature_train_df = train_df.drop(columns = [target_column_name], axis=1)
@@ -102,8 +97,7 @@ class DataTransformation:
 
             logging.info('Saved Preprocessing Object!')
 
-            save_object(file_path = self.data_transformation_config.preprocessor_obj_file_path,
-                        obj = preprocessing_obj)
+            save_object(file_path = self.data_transformation_config.preprocessor_obj_file_path, obj = preprocessing_obj)
 
             return (train_arr, test_arr, self.data_transformation_config.preprocessor_obj_file_path)
 
